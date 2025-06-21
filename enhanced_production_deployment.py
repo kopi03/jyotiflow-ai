@@ -139,7 +139,8 @@ class SecurityEnhancementMiddleware(BaseHTTPMiddleware):
             "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
             "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'",
             "Referrer-Policy": "strict-origin-when-cross-origin",
-            "X-Spiritual-Protection": "🛡️ Divine Protection Active"
+            "X-Spiritual-Protection": "Divine Protection Active" 
+
         }
         
         for header, value in security_headers.items():
@@ -246,7 +247,8 @@ def setup_enhanced_routes(app: FastAPI):
     # Enhanced Frontend Routes
     @app.get("/", response_class=HTMLResponse)
     async def home(request: Request):
-        return await enhanced_home_page(request)
+        return await enhanced_home_page(request, user=None, db=None)
+
     
     @app.get("/spiritual-guidance", response_class=HTMLResponse) 
     async def spiritual_guidance(request: Request):

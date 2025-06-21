@@ -45,9 +45,10 @@ async def enhanced_template_context(
         "divine_blessing": "🙏🏼 Om Namah Shivaya",
         
         # Enhanced features flags
-        "avatar_enabled": user and user.subscription_tier in ["premium", "elite"] if user else False,
-        "live_chat_enabled": user and user.subscription_tier in ["premium", "elite"] if user else False,
-        "satsang_access": user and user.subscription_tier != "free" if user else False,
+        "avatar_enabled": user and isinstance(user, dict) and user.get('subscription_tier') in ["premium", "elite"] if user else False,
+        "live_chat_enabled": user and isinstance(user, dict) and user.get('subscription_tier') in ["premium", "elite"] if user else False,
+        "satsang_access": user and isinstance(user, dict) and user.get('subscription_tier', 'free') != "free" if user else False,
+
         
         # Navigation enhancement
         "nav_items": [
@@ -83,9 +84,10 @@ async def enhanced_template_context(
 
 async def enhanced_home_page(
     request: Request,
-    user: Optional[SpiritualUser] = Depends(get_current_user),
-    db: EnhancedJyotiFlowDatabase = Depends(get_database)
+    user: Optional[Dict] = None,
+    db: Optional[Any] = None
 ):
+
     """তমিল - উন্নত হোম পৃষ্ঠা"""
     context = await enhanced_template_context(request, user, db)
     
